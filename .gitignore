@@ -1,0 +1,13 @@
+node_modules
+.env
+coverage
+coverage.json
+typechain
+typechain-types
+nftAbi.json
+.env
+
+#Hardhat files
+cache
+artifacts
+
