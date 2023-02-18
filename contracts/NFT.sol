@@ -2,24 +2,26 @@
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 
-contract NFT is ERC721, ERC721URIStorage, ERC721Burnable {
-    constructor(string memory uri) ERC721("NFT", "NFT") {
-        _safeMint(msg.sender, 1);
-        _setTokenURI(1, uri);
+contract NFT is ERC721 {
+    string public uri;
+
+    constructor(
+        address to,
+        string memory name,
+        string memory symbol,
+        string memory _uri
+    ) ERC721(name, symbol) {
+        _safeMint(to, 1);
+        uri = _uri;
     }
 
-    function _burn(
-        uint256 tokenId
-    ) internal override(ERC721, ERC721URIStorage) {
-        super._burn(tokenId);
+    function burn() public virtual {
+        require(_isApprovedOrOwner(_msgSender(), 1));
+        _burn(1);
     }
 
-    function tokenURI(
-        uint256 tokenId
-    ) public view override(ERC721, ERC721URIStorage) returns (string memory) {
-        return super.tokenURI(tokenId);
+    function tokenURI() public view returns (string memory) {
+        return uri;
     }
 }
